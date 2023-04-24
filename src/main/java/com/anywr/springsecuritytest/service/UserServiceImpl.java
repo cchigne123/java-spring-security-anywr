@@ -18,7 +18,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDto user) {
+    public String saveUser(UserDto user) {
+        if (this.userRepository.findUserByUsername(user.getUsername()).isPresent()) {
+            return "Error";
+        }
         User userDom = User.builder()
                 .username(user.getUsername())
                 .name(user.getName())
@@ -27,5 +30,6 @@ public class UserServiceImpl implements UserService {
                 .password(this.passwordEncoder.encode(user.getPassword()))
                 .build();
         this.userRepository.save(userDom);
+        return "Ok";
     }
 }
