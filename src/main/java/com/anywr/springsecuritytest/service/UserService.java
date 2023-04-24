@@ -1,7 +1,7 @@
 package com.anywr.springsecuritytest.service;
 
-import com.anywr.springsecuritytest.domain.User;
+import com.anywr.springsecuritytest.dto.UserDto;
 
 public interface UserService {
-    void saveUser(User user);
+    void saveUser(UserDto user);
 }

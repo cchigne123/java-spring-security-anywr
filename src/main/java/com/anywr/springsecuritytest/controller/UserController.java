@@ -1,11 +1,13 @@
 package com.anywr.springsecuritytest.controller;
 
-import com.anywr.springsecuritytest.domain.User;
+import com.anywr.springsecuritytest.dto.UserDto;
 import com.anywr.springsecuritytest.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/user")
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -15,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void saveUser(User user){
+    public void saveUser(@Valid @RequestBody UserDto user){
         this.userService.saveUser(user);
     }
 

@@ -1,6 +1,7 @@
 package com.anywr.springsecuritytest.service;
 
 import com.anywr.springsecuritytest.domain.User;
+import com.anywr.springsecuritytest.dto.UserDto;
 import com.anywr.springsecuritytest.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        this.userRepository.save(user);
+    public void saveUser(UserDto user) {
+        User userDom = User.builder()
+                .username(user.getUsername())
+                .name(user.getName())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
+                .password(this.passwordEncoder.encode(user.getPassword()))
+                .build();
+        this.userRepository.save(userDom);
     }
 }
