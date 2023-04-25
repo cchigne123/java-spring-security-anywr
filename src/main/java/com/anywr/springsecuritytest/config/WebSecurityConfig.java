@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -15,14 +16,14 @@ public class WebSecurityConfig {
 
     private final CustomUserDetailService userDetailsService;
     private final AccountAuthenticationProvider accountAuthenticationProvider;
-    private final AuthenticationManagerBuilder auth;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers( "/user/**").permitAll()
-                .and().csrf().disable();
-                //.authenticationManager(buildAuthenticationManagerBuilder(auth));
+        http.csrf().disable().authorizeRequests()
+                .antMatchers( "/signIn", "/signUp").permitAll()
+                .anyRequest().authenticated()
+                .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

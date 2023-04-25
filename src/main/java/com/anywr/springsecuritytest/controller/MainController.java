@@ -2,8 +2,10 @@ package com.anywr.springsecuritytest.controller;
 
 import com.anywr.springsecuritytest.dto.SignInRequestDto;
 import com.anywr.springsecuritytest.dto.SignInResponseDto;
+import com.anywr.springsecuritytest.dto.UserDto;
 import com.anywr.springsecuritytest.service.CustomUserDetailService;
 import com.anywr.springsecuritytest.service.JwtService;
+import com.anywr.springsecuritytest.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,6 +25,12 @@ public class MainController {
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailService userDetailService;
     private final JwtService jwtService;
+    private final UserService userService;
+
+    @PostMapping("/signUp")
+    public String saveUser(@Valid @RequestBody UserDto user){
+        return this.userService.saveUser(user);
+    }
 
     @PostMapping("/signIn")
     @ResponseBody
