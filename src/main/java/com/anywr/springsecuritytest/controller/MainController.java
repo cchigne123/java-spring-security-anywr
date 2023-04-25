@@ -34,14 +34,10 @@ public class MainController {
 
     @PostMapping("/signIn")
     @ResponseBody
-    public SignInResponseDto signIn(@RequestBody @Valid SignInRequestDto request) throws Exception {
-        try {
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
-            authenticationManager.authenticate(authentication);
-        } catch (BadCredentialsException e) {
-            throw new Exception("Invalid username or password", e);
-        }
+    public SignInResponseDto signIn(@RequestBody @Valid SignInRequestDto request) {
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        authenticationManager.authenticate(authentication);
         UserDetails userDetails = userDetailService.loadUserByUsername(request.getUsername());
         String token = jwtService.createToken(userDetails);
         return SignInResponseDto.builder().token(token).build();
