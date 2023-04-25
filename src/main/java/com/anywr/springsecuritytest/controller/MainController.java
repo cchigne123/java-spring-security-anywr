@@ -7,6 +7,7 @@ import com.anywr.springsecuritytest.dto.UserDto;
 import com.anywr.springsecuritytest.service.CustomUserDetailService;
 import com.anywr.springsecuritytest.service.JwtService;
 import com.anywr.springsecuritytest.service.UserService;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +41,7 @@ public class MainController {
         authenticationManager.authenticate(authentication);
         UserDetails userDetails = userDetailService.loadUserByUsername(request.getUsername());
         String token = jwtService.createToken(userDetails);
-        return SignInResponseDto.builder().token(token).build();
+        return SignInResponseDto.builder().token(token).expiresAt(jwtService.getTokenExpiration(token)).build();
     }
 
 }

@@ -28,13 +28,16 @@ public class JwtService {
                 .compact();
     }
 
-    public Boolean hasTokenExpired(String token) {
+    public Date getTokenExpiration(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody()
-                .getExpiration()
-                .before(new Date());
+                .getExpiration();
+    }
+
+    public Boolean hasTokenExpired(String token) {
+        return getTokenExpiration(token).before(new Date());
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
