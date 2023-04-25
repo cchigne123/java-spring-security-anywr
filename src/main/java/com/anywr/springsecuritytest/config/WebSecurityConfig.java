@@ -1,6 +1,5 @@
 package com.anywr.springsecuritytest.config;
 
-import com.anywr.springsecuritytest.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final CustomUserDetailService userDetailsService;
     private final AccountAuthenticationProvider accountAuthenticationProvider;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
