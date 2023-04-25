@@ -23,6 +23,12 @@ public class CustomExceptionHandler {
         // Do nothing because this is a base class.
     }
 
+    @ExceptionHandler(CustomBadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CustomBadRequestException badRequestException(CustomBadRequestException exception) {
+        return exception;
+    }
+
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> invalidCredentialsException(AuthenticationException ex) {

@@ -1,5 +1,6 @@
 package com.anywr.springsecuritytest.controller;
 
+import com.anywr.springsecuritytest.config.exception.CustomBadRequestException;
 import com.anywr.springsecuritytest.dto.SignInRequestDto;
 import com.anywr.springsecuritytest.dto.SignInResponseDto;
 import com.anywr.springsecuritytest.dto.UserDto;
@@ -8,7 +9,6 @@ import com.anywr.springsecuritytest.service.JwtService;
 import com.anywr.springsecuritytest.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +28,8 @@ public class MainController {
     private final UserService userService;
 
     @PostMapping("/signUp")
-    public String saveUser(@Valid @RequestBody UserDto user){
-        return this.userService.saveUser(user);
+    public void saveUser(@Valid @RequestBody UserDto user) throws CustomBadRequestException {
+        this.userService.saveUser(user);
     }
 
     @PostMapping("/signIn")

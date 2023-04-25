@@ -1,8 +1,11 @@
 package com.anywr.springsecuritytest.service;
 
+import com.anywr.springsecuritytest.config.exception.CustomBadRequestException;
 import com.anywr.springsecuritytest.domain.User;
 import com.anywr.springsecuritytest.dto.UserDto;
 import com.anywr.springsecuritytest.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String saveUser(UserDto user) {
+    public void saveUser(UserDto user) throws CustomBadRequestException {
         if (this.userRepository.findUserByUsername(user.getUsername()).isPresent()) {
-            return "Error";
+            throw new CustomBadRequestException("Username " + user.getUsername()
+                    + " is already taken. Choose another one");
         }
         User userDom = User.builder()
                 .username(user.getUsername())
@@ -32,7 +36,6 @@ public class UserServiceImpl implements UserService {
                 .password(this.passwordEncoder.encode(user.getPassword()))
                 .build();
         this.userRepository.save(userDom);
-        return "Ok";
     }
 
     @Override
