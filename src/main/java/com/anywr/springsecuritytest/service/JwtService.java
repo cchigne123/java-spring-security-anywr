@@ -15,10 +15,7 @@ public class JwtService {
     private static final int EXPIRATION_TIME = 1000 * 60 * 60;
     private final String SECRET_KEY;
 
-    @Value("${jwt.sign.key}")
-    private String jwtSignKey = "prueba";
-
-    public JwtService() {
+    public JwtService(@Value("${jwt.sign.key}") String jwtSignKey) {
         SECRET_KEY = Base64.getEncoder().encodeToString(jwtSignKey.getBytes());
     }
 
