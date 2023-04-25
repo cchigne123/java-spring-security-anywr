@@ -14,6 +14,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserDto user) throws CustomBadRequestException {
         if (this.userRepository.findUserByUsername(user.getUsername()).isPresent()) {
+            logger.error("Username {} already exists", user.getUsername());
             throw new CustomBadRequestException("Username " + user.getUsername()
                     + " is already taken. Choose another one");
         }
