@@ -6,6 +6,8 @@ import com.anywr.springsecuritytest.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -31,5 +33,18 @@ public class UserServiceImpl implements UserService {
                 .build();
         this.userRepository.save(userDom);
         return "Ok";
+    }
+
+    @Override
+    public UserDto findUser(String username) {
+        Optional<User> optUser = this.userRepository.findUserByUsername(username);
+        return optUser.map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setUsername(user.getUsername());
+            userDto.setEmail(user.getEmail());
+            userDto.setName(user.getName());
+            userDto.setLastname(user.getLastname());
+            return userDto;
+        }).orElse(null);
     }
 }

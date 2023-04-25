@@ -1,5 +1,7 @@
 package com.anywr.springsecuritytest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,8 @@ import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"credentialsNonExpired", "accountNonLocked", "accountNonExpired", "enabled", "authorities"})
 public class UserDto implements UserDetails {
 
     @NotBlank(message = "A username must be provided")
